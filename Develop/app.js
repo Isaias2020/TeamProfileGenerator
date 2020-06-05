@@ -18,12 +18,30 @@ const questions = [
         message: 'Please enter the Employees name:',
     },
     {
-        name: 'Employee Role',
-        message: 'Please enter the Employees role:',
-    },
-    {
         name: 'Employee ID',
         message: 'Please enter the Employees id:',
+    },
+    {
+        name: 'Employee Email',
+        message: 'Please enter the Employees email:',
+    },
+    {
+        type: 'list',
+        name: 'Employee Type',
+        message: 'Which type of team member would you like to add?',
+        choices: ['Manager', 'Engineer', 'Intern']
+    },
+    {
+        name: 'Office Number',
+        message: 'What is the Managers office number?',
+    },
+    {
+        name: 'Github',
+        message: 'What is the Engineers github username?',
+    },
+    {
+        name: 'School',
+        message: 'What is the name of the school the intern attended?',
     },
 ]
 // Write code to use inquirer to gather information about the development team members,
@@ -32,7 +50,7 @@ const questions = [
 inquirer
     .prompt(questions)
     .then(answers => {
-        const employee = new employee(['Employee Name'], ['Employee Role'], ['Employee ID']);
+        const employee = new employee(['Employee Name'], ['Employee ID'], ['Employee Email']);
         console.log(employee);
     })
 // After the user has input all employees desired, call the `render` function (required
