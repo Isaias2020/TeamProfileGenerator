@@ -7,52 +7,62 @@ const path = require("path");
 const fs = require("fs");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output")
-
 const outputPath = path.join(OUTPUT_DIR, "team.html");
-
 const render = require("./lib/htmlRenderer");
 
-const questions = [
-    {
-        name: 'Employee Name',
-        message: 'Please enter the Employees name:',
-    },
-    {
-        name: 'Employee ID',
-        message: 'Please enter the Employees id:',
-    },
-    {
-        name: 'Employee Email',
-        message: 'Please enter the Employees email:',
-    },
-    {
-        type: 'list',
-        name: 'Employee Type',
-        message: 'Which type of team member would you like to add?',
-        choices: ['Manager', 'Engineer', 'Intern']
-    },
-    {
-        name: 'Office Number',
-        message: 'What is the Managers office number?',
-    },
-    {
-        name: 'Github',
-        message: 'What is the Engineers github username?',
-    },
-    {
-        name: 'School',
-        message: 'What is the name of the school the intern attended?',
-    },
-]
+console.log('Please build your team: ')
+const startQuestions = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'Employee Name',
+            message: 'Please enter the Employees name:',
+        },
+        {
+            type: 'number',
+            name: 'Employee ID',
+            message: 'Please enter the Employees id:',
+        },
+        {
+            type: 'input',
+            name: 'Employee Email',
+            message: 'Please enter the Employees email:',
+        },
+        {
+            type: 'list',
+            name: 'Employee Type',
+            message: 'Which type of team member would you like to add?',
+            choices: ['Manager', 'Engineer', 'Intern', 'I do not want to add more team members.']
+        },
+        {
+            type: 'number',
+            name: 'Office Number',
+            message: 'What is the Managers office number?',
+        },
+        {
+            name: 'Github',
+            message: 'What is the Engineers github username?',
+        },
+        {
+            name: 'School',
+            message: 'What is the name of the school the intern attended?',
+        },
+    ]).then((prompt) => {
+
+    });
+};
+
+startQuestions();
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
-inquirer
-    .prompt(questions)
-    .then(answers => {
-        const employee = new employee(['Employee Name'], ['Employee ID'], ['Employee Email']);
-        console.log(employee);
-    })
+// inquirer
+//     .prompt(questions)
+//     .then(answers => {
+//         const employee = new employee(['Employee Name'], ['Employee ID'], ['Employee Email']);
+//         console.log(employee);
+//     })
+
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
