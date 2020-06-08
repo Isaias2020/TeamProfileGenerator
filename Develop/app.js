@@ -6,8 +6,8 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
-//const OUTPUT_DIR = path.resolve(__dirname, "output")
-//const outputPath = path.join(OUTPUT_DIR, "team.html");
+const OUTPUT_DIR = path.resolve(__dirname, "output")
+const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 let employeesArr = []
 
@@ -53,7 +53,7 @@ const startQuestions = () => {
             internAnswer()
         }
         else {
-            fs.writeFile("team.html", render(employeesArr), function (err) {
+            fs.writeFile(outputPath, render(employeesArr), function (err) {
                 if (err) throw err
                 console.log("Only the Manager is listed.")
             })
