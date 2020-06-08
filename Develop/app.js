@@ -6,62 +6,145 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
-const OUTPUT_DIR = path.resolve(__dirname, "output")
-const outputPath = path.join(OUTPUT_DIR, "team.html");
+//const OUTPUT_DIR = path.resolve(__dirname, "output")
+//const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
+let employeesArr = []
 
 console.log('Please build your team: ')
 const startQuestions = () => {
     inquirer.prompt([
         {
             type: 'input',
-            name: 'Employee Name',
-            message: 'Please enter the Employees name:',
+            name: 'ManagerName',
+            message: 'Please enter the Managers name:',
         },
         {
             type: 'number',
-            name: 'Employee ID',
-            message: 'Please enter the Employees id:',
+            name: 'ManagerID',
+            message: 'Please enter the Managers id:',
         },
         {
             type: 'input',
-            name: 'Employee Email',
-            message: 'Please enter the Employees email:',
-        },
-        {
-            type: 'list',
-            name: 'Employee Type',
-            message: 'Which type of team member would you like to add?',
-            choices: ['Manager', 'Engineer', 'Intern', 'I do not want to add more team members.']
+            name: 'ManagerEmail',
+            message: 'Please enter the Managers email:',
         },
         {
             type: 'number',
-            name: 'Office Number',
+            name: 'OfficeNumber',
             message: 'What is the Managers office number?',
         },
         {
-            name: 'Github',
-            message: 'What is the Engineers github username?',
+            type: 'list',
+            name: 'EmployeeType',
+            message: 'Which type of team member would you like to add?',
+            choices: ['Engineer', 'Intern', 'I do not want to add more team members.']
         },
-        {
-            name: 'School',
-            message: 'What is the name of the school the intern attended?',
-        },
-    ]).then((prompt) => {
 
+
+    ]).then((answers) => {
+        const manager = new Manager(answers.ManagerName, answers.ManagerID, answers.ManagerEmail, answers.OfficeNumber)
+        employeesArr.push(manager)
+
+        if (answers.EmployeeType === "Engineer") {
+            engineerAnswer()
+        }
     });
 };
+
+function resume() {
+
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'EmployeeType',
+            message: 'Which type of team member would you like to add?',
+            choices: ['Engineer', 'Intern', 'I do not want to add more team members.']
+        }
+    ]).then(answers => {
+
+        if (answers.EmployeeType === "Engineer") {
+            engineerAnswer()
+        }
+        else if (answers.EmployeeType === "Intern") {
+            internAnswer()
+        }
+        else {
+            fs.writeFile("team.html", render(employeesArr), function (err) {
+
+                if (err) throw err
+
+                console.log("Done");
+            })
+        }
+    })
+}
+
+const internAnswer = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'internname',
+            message: 'What is the Interns name?',
+        },
+        {
+            type: 'number',
+            name: 'internid',
+            message: 'What is the Interns ID number?',
+        },
+        {
+            type: 'input',
+            name: 'internemail',
+            message: 'What is the Interns email address?',
+        },
+        {
+            type: 'input',
+            name: 'internschool',
+            message: 'What school is the Intern attending?',
+        },
+    ]).then((answers) => {
+
+        const intern = new Intern(answers.internname, answers.internid, answers.internemail, answers.internschool)
+        employeesArr.push(intern)
+        console.log(intern);
+        resume()
+    });
+}
+
+const engineerAnswer = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'engineername',
+            message: 'What is the Engineers name?',
+        },
+        {
+            type: 'number',
+            name: 'engineerid',
+            message: 'What is the Engineers ID number?',
+        },
+        {
+            type: 'input',
+            name: 'engineeremail',
+            message: 'What is the Engineers email address?',
+        },
+        {
+            type: 'input',
+            name: 'engineerGithub',
+            message: 'What is the Engineers github username?',
+        },
+    ]).then((answers) => {
+
+        const engineer = new Engineer(answers.engineername, answers.engineerid, answers.engineeremail, answers.engineerGithub)
+        employeesArr.push(engineer)
+        console.log(engineer);
+        resume()
+    });
+}
 
 startQuestions();
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-
-// inquirer
-//     .prompt(questions)
-//     .then(answers => {
-//         const employee = new employee(['Employee Name'], ['Employee ID'], ['Employee Email']);
-//         console.log(employee);
-//     })
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
