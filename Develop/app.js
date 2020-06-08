@@ -49,6 +49,15 @@ const startQuestions = () => {
         if (answers.EmployeeType === "Engineer") {
             engineerAnswer()
         }
+        else if (answers.EmployeeType === "Intern") {
+            internAnswer()
+        }
+        else {
+            fs.writeFile("team.html", render(employeesArr), function (err) {
+                if (err) throw err
+                console.log("Only the Manager is listed.")
+            })
+        }
     });
 };
 
@@ -74,7 +83,7 @@ function resume() {
 
                 if (err) throw err
 
-                console.log("Done");
+                console.log("Your Html has been rendered, please look for the team.html file.");
             })
         }
     })
@@ -106,7 +115,6 @@ const internAnswer = () => {
 
         const intern = new Intern(answers.internname, answers.internid, answers.internemail, answers.internschool)
         employeesArr.push(intern)
-        console.log(intern);
         resume()
     });
 }
@@ -137,7 +145,6 @@ const engineerAnswer = () => {
 
         const engineer = new Engineer(answers.engineername, answers.engineerid, answers.engineeremail, answers.engineerGithub)
         employeesArr.push(engineer)
-        console.log(engineer);
         resume()
     });
 }
