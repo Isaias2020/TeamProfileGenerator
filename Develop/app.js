@@ -6,8 +6,8 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
-const OUTPUT_DIR = path.resolve(__dirname, "output")
-const outputPath = path.join(OUTPUT_DIR, "team.html");
+// const OUTPUT_DIR = path.resolve(__dirname, "output")
+// const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 let employeesArr = []
 
@@ -18,6 +18,7 @@ const startQuestions = () => {
             type: 'input',
             name: 'ManagerName',
             message: 'Please enter the Managers name:',
+            validate: validateName
         },
         {
             type: 'number',
@@ -53,7 +54,7 @@ const startQuestions = () => {
             internAnswer()
         }
         else {
-            fs.writeFile(outputPath, render(employeesArr), function (err) {
+            fs.writeFile("team.html", render(employeesArr), function (err) {
                 if (err) throw err
                 console.log("Only the Manager is listed.")
             })
@@ -95,6 +96,7 @@ const internAnswer = () => {
             type: 'input',
             name: 'internname',
             message: 'What is the Interns name?',
+            validate: validateName
         },
         {
             type: 'number',
@@ -125,6 +127,7 @@ const engineerAnswer = () => {
             type: 'input',
             name: 'engineername',
             message: 'What is the Engineers name?',
+            validate: validateName
         },
         {
             type: 'number',
@@ -147,6 +150,12 @@ const engineerAnswer = () => {
         employeesArr.push(engineer)
         resume()
     });
+}
+
+// function for Name Validation if user tries to enter a blank name. 
+
+function validateName(name) {
+    return name !== '' || "Please enter a name!";
 }
 
 startQuestions();
