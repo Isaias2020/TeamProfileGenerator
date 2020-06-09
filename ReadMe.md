@@ -1,4 +1,4 @@
-# Team Profile Generator
+# TeamProfileGenerator
 
 <p>
 <a>
